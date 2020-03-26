@@ -1,6 +1,7 @@
 import posts from './_posts.js';
 import * as fs from 'fs';
 
+
 let text = 'hello?';
 fs.readFile('test.txt', function (err, data) {
 	text = data.toString();
