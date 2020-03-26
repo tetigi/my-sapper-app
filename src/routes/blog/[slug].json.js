@@ -1,17 +1,14 @@
 import posts from './_posts.js';
 import * as fs from 'fs';
 
-let text = 'hello?';
-fs.readFile('test.txt', function (err, data) {
-	text = data.toString();
-});
+let text = fs.promises.readFile('test.txt', 'utf8');
 
 const lookup = new Map();
 posts.forEach(post => {
 	lookup.set(post.slug, post);
 });
 
-export function get(req, res, next) {
+export async function get(req, res, next) {
 	// the `slug` parameter is available because
 	// this file is called [slug].json.js
 	const { slug } = req.params;
@@ -22,7 +19,7 @@ export function get(req, res, next) {
 		});
 
 		const data = lookup.get(slug)
-		data.text = text;
+		data.text = await text;
 
 		res.end(JSON.stringify(data));
 	} else {
